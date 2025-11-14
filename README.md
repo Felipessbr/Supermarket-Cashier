@@ -30,6 +30,11 @@ Pix
 🧮 Cálculos e formatações automáticas
 
 📱 Layout responsivo
+
+<img width="458" height="929" alt="iPhone-14-Plus-localhost" src="https://github.com/user-attachments/assets/754157e9-10a9-41b8-a685-e615ce846649" />
+
+
+
 🛠️ Tecnologias Utilizadas
 
 React JS
