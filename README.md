@@ -1,16 +1,43 @@
-# React + Vite
+🛒 Supermarket Cashier — Sistema de Caixa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um sistema moderno de caixa desenvolvido com Vite + React + Tailwind CSS, focado em velocidade, experiência do usuário e organização.
+O projeto simula um PDV (Ponto de Venda) com dashboard, carrinho, métodos de pagamento e cupom fiscal.
 
-Currently, two official plugins are available:
+🚀 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📊 Dashboard com total de vendas, quantidade de itens e produtos.
 
-## React Compiler
+🛍️ Carrinho de Compras com itens, quantidade e subtotal.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+💳 Múltiplas Formas de Pagamento
 
-## Expanding the ESLint configuration
+Dinheiro
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Cartão
+
+Pix
+
+🧾 Emissão de Cupom Fiscal
+
+🗂️ Listagem de Produtos
+
+🎨 Interface moderna com Tailwind CSS
+
+⚡ Performance otimizada com Vite
+
+🪟 Modais animados
+
+🧮 Cálculos e formatações automáticas
+
+📱 Layout responsivo
+🛠️ Tecnologias Utilizadas
+
+React JS
+
+Vite
+
+Tailwind CSS
+
+Lucide Icons
+
+JavaScript (ES6+)
