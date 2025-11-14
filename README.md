@@ -31,7 +31,10 @@ Pix
 
 📱 Layout responsivo
 
-<img width="458" height="929" alt="iPhone-14-Plus-localhost" src="https://github.com/user-attachments/assets/754157e9-10a9-41b8-a685-e615ce846649" />
+<img width="258" height="929" alt="iPhone-14-Plus-localhost" src="https://github.com/user-attachments/assets/754157e9-10a9-41b8-a685-e615ce846649" />
+<img width="258" height="929" alt="iPhone-14-Plus-localhost (1)" src="https://github.com/user-attachments/assets/b8a78710-749c-48e7-a441-feb973954dc1" />
+<img width="258" height="929" alt="iPhone-14-Plus-localhost (2)" src="https://github.com/user-attachments/assets/1ee418a7-d1f1-49e6-8a4a-4f4fde43d8e4" />
+
 
 
 
