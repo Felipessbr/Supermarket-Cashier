@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+:root {
+  --cor-fundo: #22122b;
+  --cor-texto: #e2d8e7;
+}
+/* Scrollbar global */
+
+body {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); /* fundo escuro */
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--cor-fundo);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--cor-texto);
+  transition: .3s;
+}
+
+/* Animações personalizadas */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.8s ease-out;
+}
+
+/* Scrollbar customizada moderna */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--cor-fundo);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--cor-texto);
+    transition: 0.3s;
+  }
+}
+
+/* Firefox (scrollbar) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-fundo) rgba(255, 255, 255, 0.05);
+}
