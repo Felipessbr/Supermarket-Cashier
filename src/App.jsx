@@ -4,6 +4,8 @@ import ProdutosGrid from "./components/ProdutosGrid";
 import Carrinho from "./components/Carrinho";
 import ModalPagamento from "./components/ModalPagamento";
 import ModalCupomFiscal from "./components/ModalCupomFiscal";
+import GestaoEstoque from "./components/estoque/GestaoEstoque";
+
 import { produtos } from "./data/produtos";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,10 +16,14 @@ function App() {
   const [mostrarCupom, setMostrarCupom] = useState(false);
   const [desconto, setDesconto] = useState(0);
   const [cpf, setCpf] = useState("");
+
+  const [view, setView] = useState("vendas"); // 👈 CONTROLE DE TELA
+
   const [formaPagamento, setFormaPagamento] = useState("dinheiro");
   const [valorPago, setValorPago] = useState("");
   const [cupomData, setCupomData] = useState(null);
   const [animacaoAdd, setAnimacaoAdd] = useState("");
+
   const [totalVendas, setTotalVendas] = useState(0);
 
   const [tipoCartao, setTipoCartao] = useState("debito");
@@ -32,10 +38,16 @@ function App() {
 
   const [validarCamposCartao, setValidarCamposCartao] = useState(false);
 
-  const calcularTotal = (carrinho) => {
+  // ---------------------------------------
+  // CALCULAR TOTAL DO CARRINHO
+  // ---------------------------------------
+  const calcularTotal = () => {
     return carrinho.reduce((acc, item) => acc + item.subtotal, 0);
   };
 
+  // ---------------------------------------
+  // ADICIONAR PRODUTO
+  // ---------------------------------------
   const adicionarProduto = (codigo) => {
     const produto = produtos[codigo];
     const itemExistente = carrinho.find((item) => item.codigo === codigo);
@@ -71,35 +83,39 @@ function App() {
 
   const alterarQuantidade = (codigo, delta) => {
     const item = carrinho.find((i) => i.codigo === codigo);
-    if (item) {
-      const novaQtd = item.quantidade + delta;
-      if (novaQtd <= 0) {
-        removerProduto(codigo);
-      } else {
-        setCarrinho(
-          carrinho.map((i) =>
-            i.codigo === codigo
-              ? { ...i, quantidade: novaQtd, subtotal: novaQtd * i.preco }
-              : i
-          )
-        );
-      }
-    }
+    if (!item) return;
+
+    const novaQtd = item.quantidade + delta;
+    if (novaQtd <= 0) return removerProduto(codigo);
+
+    setCarrinho(
+      carrinho.map((i) =>
+        i.codigo === codigo
+          ? { ...i, quantidade: novaQtd, subtotal: novaQtd * i.preco }
+          : i
+      )
+    );
   };
 
   const removerProduto = (codigo) => {
     setCarrinho(carrinho.filter((item) => item.codigo !== codigo));
   };
 
+  // ---------------------------------------
+  // ABRIR PAGAMENTO
+  // ---------------------------------------
   const abrirPagamento = () => {
-    if (carrinho.length === 0) return;
+    if (!carrinho.length) return;
     setDesconto(0);
-    setValidarCamposCartao(false); // Reset da validação
+    setValidarCamposCartao(false);
     setMostrarPagamento(true);
   };
 
+  // ---------------------------------------
+  // FINALIZAR PAGAMENTO
+  // ---------------------------------------
   const confirmarPagamento = () => {
-    const total = calcularTotal(carrinho);
+    const total = calcularTotal();
     const valorDesconto = (total * desconto) / 100;
     const totalFinal = total - valorDesconto;
 
@@ -109,12 +125,12 @@ function App() {
     if (formaPagamento === "dinheiro") {
       const valor = parseFloat(valorPago) || 0;
       if (valor < totalFinal) {
-        toast.error("Valor insuficiente!");
-        return;
+        return toast.error("Valor insuficiente!");
       }
       troco = valor - totalFinal;
-    } else if (formaPagamento === "cartao") {
-      // Ativa validação visual
+    }
+
+    if (formaPagamento === "cartao") {
       setValidarCamposCartao(true);
 
       if (
@@ -126,26 +142,22 @@ function App() {
         cvvCartao.length < 3 ||
         !nomeCartao
       ) {
-        toast.error("Preencha todos os dados do cartão!");
-        return;
+        return toast.error("Preencha todos os dados!");
       }
+
       dadosPagamento = {
         tipo: "cartao",
-        tipoCartao: tipoCartao,
+        tipoCartao,
         numeroCartao: numeroCartao.slice(-4),
-        nomeCartao: nomeCartao,
+        nomeCartao,
         parcelas: tipoCartao === "credito" ? parcelas : 1,
       };
-    } else if (formaPagamento === "pix") {
-      if (!chavePix) {
-        toast.error("Informe a chave PIX!");
-        return;
-      }
-      dadosPagamento = {
-        tipo: "pix",
-        chavePix: chavePix,
-        tipoChavePix: tipoChavePix,
-      };
+    }
+
+    if (formaPagamento === "pix") {
+      if (!chavePix) return toast.error("Informe a chave PIX!");
+
+      dadosPagamento = { tipo: "pix", chavePix, tipoChavePix };
     }
 
     const cupom = {
@@ -164,21 +176,9 @@ function App() {
     setCupomData(cupom);
     setMostrarPagamento(false);
     setMostrarCupom(true);
-    setValidarCamposCartao(false); // Reset após sucesso
   };
 
   const novaVenda = () => {
-    if (cupomData) {
-      toast.success(
-        `Venda faturada no valor de R$ ${cupomData.total.toFixed(2)}`,
-        {
-          position: "top-center",
-          autoClose: 2500,
-          theme: "colored",
-        }
-      );
-    }
-
     setCarrinho([]);
     setDesconto(0);
     setCpf("");
@@ -190,39 +190,46 @@ function App() {
     setCvvCartao("");
     setNomeCartao("");
     setChavePix("");
-    setTipoChavePix("celular");
     setParcelas(1);
     setValidarCamposCartao(false);
     setMostrarCupom(false);
   };
 
+  // ======================================================
+  // =========  RENDERIZAÇÃO DAS TELAS ====================
+  // ======================================================
+
+  // 🔥 Tela de ESTOQUE
+  if (view === "estoque") {
+    return (
+      <GestaoEstoque
+        produtos={produtos}
+        onVoltar={() => setView("vendas")}
+      />
+    );
+  }
+
+  // 🔥 Tela de VENDAS (principal)
   return (
-    <div className="min-h-screen p-4 md:p-8 ">
-      <div className="max-w-7xl mx-auto ">
-        <div
-          className=" text-center mb-8 
-              border-b-2 border-white/20 
-              relative pb-4
-              after:content-[''] 
-              after:absolute 
-              after:bottom-0 
-              after:left-0
-              after:w-full 
-              after:h-[2px]
-              after:bg-black/40
-              after:translate-y-[4px]
-              after:blur-sm "
-        >
+    <div className="min-h-screen p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+
+        {/* ---------- TÍTULO ---------- */}
+        <div className="text-center mb-8 border-b-2 border-white/20 pb-4 relative">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
             Villa Itália
           </h1>
-          <p className="text-[var(--cor-texto)] text-lg mb-2 ">Villa Itália Supermercado</p>
+          <p className="text-[var(--cor-texto)] text-lg mb-2">
+            Villa Itália Supermercado
+          </p>
         </div>
 
+        {/* ---------- DASHBOARD ---------- */}
         <Dashboard
           totalVendas={totalVendas}
           itensCarrinho={carrinho.length}
           totalProdutos={Object.keys(produtos).length}
+          onAbrirEstoque={() => setView("estoque")}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -234,7 +241,7 @@ function App() {
 
           <Carrinho
             carrinho={carrinho}
-            total={calcularTotal(carrinho)}
+            total={calcularTotal()}
             onAlterarQuantidade={alterarQuantidade}
             onRemover={removerProduto}
             onFinalizar={abrirPagamento}
@@ -242,11 +249,12 @@ function App() {
         </div>
       </div>
 
+      {/* MODAIS */}
       <ModalPagamento
         mostrar={mostrarPagamento}
         onFechar={() => {
           setMostrarPagamento(false);
-          setValidarCamposCartao(false); // Reset ao fechar
+          setValidarCamposCartao(false);
         }}
         desconto={desconto}
         setDesconto={setDesconto}
@@ -254,7 +262,7 @@ function App() {
         setCpf={setCpf}
         formaPagamento={formaPagamento}
         setFormaPagamento={setFormaPagamento}
-        totalSemDesconto={calcularTotal(carrinho)}
+        totalSemDesconto={calcularTotal()}
         onConfirmar={confirmarPagamento}
         valorPago={valorPago}
         setValorPago={setValorPago}
@@ -282,6 +290,7 @@ function App() {
         cupomData={cupomData}
         onNovaVenda={novaVenda}
       />
+
       <ToastContainer position="top-center" autoClose={2500} theme="colored" />
     </div>
   );

@@ -104,7 +104,7 @@ export default function ModalPagamento({
                 const valor = parseFloat(e.target.value) || 0;
                 setDesconto(Math.min(100, Math.max(0, valor)));
               }}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-[var(--cor-fundo)]"
             />
           </div>
 
@@ -119,7 +119,7 @@ export default function ModalPagamento({
               value={cpf}
               onChange={(e) => validarCpf(e.target.value)}
               placeholder="000.000.000-00"
-              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-colors ${
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-colorsb text-[var(--cor-fundo)] ${
                 erroCpf
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-300 focus:border-blue-500"

@@ -1,9 +1,11 @@
 import React from 'react';
-import { TrendingUp, ShoppingCart, Package } from 'lucide-react';
+import { TrendingUp, ShoppingCart, Package, Boxes } from 'lucide-react';
 
-export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos }) {
+export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos, onAbrirEstoque }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+
+      {/* Card - Vendas Hoje */}
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
         <div className="flex items-center gap-4">
           <div className="bg-[var(--cor-fundo)] p-4 rounded-xl">
@@ -12,12 +14,13 @@ export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos })
           <div>
             <p className="text-white text-sm font-medium mb-1">Vendas Hoje</p>
             <p className="text-3xl font-bold text-[var(--cor-texto)]">
-             R$ {totalVendas.toFixed(2)}
+              R$ {totalVendas.toFixed(2)}
             </p>
           </div>
         </div>
       </div>
-      
+
+      {/* Card - Itens no Carrinho */}
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
         <div className="flex items-center gap-4">
           <div className="bg-[var(--cor-fundo)] p-4 rounded-xl">
@@ -29,7 +32,8 @@ export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos })
           </div>
         </div>
       </div>
-      
+
+      {/* Card - Total de Produtos */}
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
         <div className="flex items-center gap-4">
           <div className="bg-[var(--cor-fundo)] p-4 rounded-xl">
@@ -41,6 +45,18 @@ export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos })
           </div>
         </div>
       </div>
+
+      {/* Card - Botão Estoque */}
+      <button
+        onClick={onAbrirEstoque}
+        className="bg-[var(--cor-fundo)] backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-[var(--cor-fundo-hover)] transition-all duration-300 flex items-center justify-center gap-4"
+      >
+        <Boxes className="w-8 h-8 text-white" />
+        <p className="text-xl font-bold text-[var(--cor-texto)]">
+          Gestão de Estoque
+        </p>
+      </button>
+
     </div>
   );
 }

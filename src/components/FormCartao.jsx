@@ -54,7 +54,7 @@ export default function FormCartao({
             setNumeroCartao(formatado);
             setErroNumero(false);
           }}
-          className={`w-full px-4 py-3 border-2 rounded-xl text-gray-800 transition-colors focus:outline-none 
+          className={`w-full px-4 py-3 border-2 rounded-xl text-[var(--cor-fundo)] transition-colors focus:outline-none 
             ${
               erroNumero
                 ? "border-red-500"
@@ -82,7 +82,7 @@ export default function FormCartao({
               setValidadeCartao(valor);
               setErroValidade(false);
             }}
-            className={`w-full px-4 py-3 border-2 rounded-xl text-gray-800 transition-colors focus:outline-none 
+            className={`w-full px-4 py-3 border-2 rounded-xl text-[var(--cor-fundo)] transition-colors focus:outline-none 
               ${
                 erroValidade
                   ? "border-red-500"
@@ -104,7 +104,7 @@ export default function FormCartao({
               setCvvCartao(e.target.value.replace(/\D/g, ""));
               setErroCvv(false);
             }}
-            className={`w-full px-4 py-3 border-2 rounded-xl text-gray-800 transition-colors focus:outline-none 
+            className={`w-full px-4 py-3 border-2 rounded-xl text-[var(--cor-fundo)] transition-colors focus:outline-none 
               ${
                 erroCvv
                   ? "border-red-500"
@@ -132,7 +132,7 @@ export default function FormCartao({
             setNomeCartao(valor.replace(/[0-9]/g, "").toUpperCase());
             setErroNome(false);
           }}
-          className={`w-full px-4 py-3 border-2 rounded-xl uppercase transition-colors focus:outline-none
+          className={`w-full px-4 py-3 border-2 rounded-xl uppercase transition-colors focus:outline-none text-[var(--cor-fundo)]
             ${
               erroNome
                 ? "border-red-500"
@@ -189,7 +189,7 @@ export default function FormCartao({
           <select
             value={parcelas}
             onChange={(e) => setParcelas(parseInt(e.target.value))}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 cursor-pointer "
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 cursor-pointer text-[var(--cor-fundo)]"
           >
             {Array.from({ length: 24 }, (_, i) => i + 1).map((num) => (
               <option key={num} value={num}>

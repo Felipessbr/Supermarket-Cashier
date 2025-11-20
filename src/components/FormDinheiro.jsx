@@ -50,7 +50,7 @@ export default function FormDinheiro({ valorPago, setValorPago, totalFinal }) {
         step="0.01"
         value={valorPago}
         onChange={handleChange}
-        className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-800 focus:outline-none transition-colors ${bordaInput}`}
+        className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-800 focus:outline-none transition-colors text-[var(--cor-fundo)] ${bordaInput}`}
         placeholder="Digite o valor recebido"
       />
 
