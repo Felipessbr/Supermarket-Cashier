@@ -5,19 +5,19 @@ import Carrinho from "./components/Carrinho";
 import ModalPagamento from "./components/ModalPagamento";
 import ModalCupomFiscal from "./components/ModalCupomFiscal";
 import GestaoEstoque from "./components/estoque/GestaoEstoque";
-
-import { produtos } from "./data/produtos";
+import { produtos as produtosIniciais } from "./data/produtos"; // ✅ Renomear para usar estado
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const [produtos, setProdutos] = useState(produtosIniciais); // ✅ Adicionar estado
   const [carrinho, setCarrinho] = useState([]);
   const [mostrarPagamento, setMostrarPagamento] = useState(false);
   const [mostrarCupom, setMostrarCupom] = useState(false);
   const [desconto, setDesconto] = useState(0);
   const [cpf, setCpf] = useState("");
 
-  const [view, setView] = useState("vendas"); // 👈 CONTROLE DE TELA
+  const [view, setView] = useState("vendas");
 
   const [formaPagamento, setFormaPagamento] = useState("dinheiro");
   const [valorPago, setValorPago] = useState("");
@@ -38,16 +38,18 @@ function App() {
 
   const [validarCamposCartao, setValidarCamposCartao] = useState(false);
 
-  // ---------------------------------------
-  // CALCULAR TOTAL DO CARRINHO
-  // ---------------------------------------
+  // ✅ Função para atualizar produtos (necessária para o estoque)
+  const handleAtualizarProdutos = (dadosProduto) => {
+    setProdutos(prev => ({
+      ...prev,
+      [dadosProduto.codigo]: dadosProduto
+    }));
+  };
+
   const calcularTotal = () => {
     return carrinho.reduce((acc, item) => acc + item.subtotal, 0);
   };
 
-  // ---------------------------------------
-  // ADICIONAR PRODUTO
-  // ---------------------------------------
   const adicionarProduto = (codigo) => {
     const produto = produtos[codigo];
     const itemExistente = carrinho.find((item) => item.codigo === codigo);
@@ -101,9 +103,6 @@ function App() {
     setCarrinho(carrinho.filter((item) => item.codigo !== codigo));
   };
 
-  // ---------------------------------------
-  // ABRIR PAGAMENTO
-  // ---------------------------------------
   const abrirPagamento = () => {
     if (!carrinho.length) return;
     setDesconto(0);
@@ -111,9 +110,6 @@ function App() {
     setMostrarPagamento(true);
   };
 
-  // ---------------------------------------
-  // FINALIZAR PAGAMENTO
-  // ---------------------------------------
   const confirmarPagamento = () => {
     const total = calcularTotal();
     const valorDesconto = (total * desconto) / 100;
@@ -176,9 +172,18 @@ function App() {
     setCupomData(cupom);
     setMostrarPagamento(false);
     setMostrarCupom(true);
+    setValidarCamposCartao(false); // ✅ Adicionar reset
   };
 
   const novaVenda = () => {
+    if (cupomData) { // ✅ Adicionar notificação
+      toast.success(`Venda faturada no valor de R$ ${cupomData.total.toFixed(2)}`, {
+        position: "top-center",
+        autoClose: 2500,
+        theme: "colored"
+      });
+    }
+
     setCarrinho([]);
     setDesconto(0);
     setCpf("");
@@ -190,46 +195,44 @@ function App() {
     setCvvCartao("");
     setNomeCartao("");
     setChavePix("");
+    setTipoChavePix("celular"); // ✅ Corrigir
     setParcelas(1);
     setValidarCamposCartao(false);
     setMostrarCupom(false);
   };
 
-  // ======================================================
-  // =========  RENDERIZAÇÃO DAS TELAS ====================
-  // ======================================================
-
-  // 🔥 Tela de ESTOQUE
+  // ✅ Renderizar tela de estoque
   if (view === "estoque") {
     return (
-      <GestaoEstoque
-        produtos={produtos}
-        onVoltar={() => setView("vendas")}
-      />
+      <>
+        <GestaoEstoque
+          produtos={produtos}
+          onVoltar={() => setView("vendas")}
+          onAtualizarProdutos={handleAtualizarProdutos} // ✅ Passar função
+        />
+        <ToastContainer position="top-center" autoClose={2500} theme="colored" />
+      </>
     );
   }
 
-  // 🔥 Tela de VENDAS (principal)
+  // Tela de vendas
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-
-        {/* ---------- TÍTULO ---------- */}
-        <div className="text-center mb-8 border-b-2 border-white/20 pb-4 relative">
+        <div className="text-center mb-8">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
             Villa Itália
           </h1>
-          <p className="text-[var(--cor-texto)] text-lg mb-2">
+          <p>
             Villa Itália Supermercado
           </p>
         </div>
 
-        {/* ---------- DASHBOARD ---------- */}
         <Dashboard
           totalVendas={totalVendas}
           itensCarrinho={carrinho.length}
           totalProdutos={Object.keys(produtos).length}
-          onAbrirEstoque={() => setView("estoque")}
+          onAbrirEstoque={() => setView("estoque")} // ✅ Passar função
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -249,7 +252,6 @@ function App() {
         </div>
       </div>
 
-      {/* MODAIS */}
       <ModalPagamento
         mostrar={mostrarPagamento}
         onFechar={() => {
