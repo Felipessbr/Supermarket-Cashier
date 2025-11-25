@@ -49,7 +49,7 @@ export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos, o
       {/* Card - Botão Estoque */}
       <button
         onClick={onAbrirEstoque}
-        className="bg-[var(--cor-fundo)] backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-[var(--cor-fundo-hover)] transition-all duration-300 flex items-center justify-center gap-4"
+        className="bg-[var(--cor-fundo)] backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-[var(--cor-fundo-hover)] transition-all duration-300 flex items-center justify-center gap-4 cursor-pointer  hover:bg-white/15 transition-all duration-300"
       >
         <Boxes className="w-8 h-8 text-white" />
         <p className="text-xl font-bold text-[var(--cor-texto)]">

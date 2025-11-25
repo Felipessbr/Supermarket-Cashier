@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import TabelaProdutos from "./TabelaProdutos";
 import ModalAdicionarProduto from "./ModalAdicionarProduto";
-// import ModalMovimentacao from "./ModalMovimentacao";
+import ModalMovimentacao from "./ModalMovimentacao";
 // import HistoricoMovimentacoes from "./HistoricoMovimentacoes";
 // import AlertasEstoque from "./AlertasEstoque";
 export default function GestaoEstoque({
