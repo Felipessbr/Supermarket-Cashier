@@ -36,7 +36,7 @@ export default function ModalMovimentacao({ produto, onSalvar, onFechar }) {
       nome: produto.nome,
       tipo: isEntrada ? "entrada" : "saida",
       quantidade: parseInt(quantidade),
-      estoqueAnterior: produto.produto.estoque,
+      estoqueAnterior: produto.estoque,
       novoEstoque: novoEstoque,
       motivo: motivo.trim(),
       usuario: "Sistema",
