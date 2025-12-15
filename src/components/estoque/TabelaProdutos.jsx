@@ -48,7 +48,7 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
               <th className="text-left py-3 px-4 text-white font-bold">
                 Produto
               </th>
-              <th className="text-left py-3 px-4 text-white font-bold">
+              <th className="text-left py-3 px-4 text-white font-bold ">
                 Categoria
               </th>
               <th className="text-left py-3 px-4 text-white font-bold">
@@ -71,8 +71,6 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
           </thead>
           <tbody>
             {produtosFiltrados.map(([codigo, produto]) => {
-              const estoquePercentual =
-                (produto.estoque / produto.estoqueMinimo) * 100;
               const statusEstoque =
                 produto.estoque === 0
                   ? "sem-estoque"
@@ -92,8 +90,8 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
                     {produto.nome}
                   </td>
                   <td className="py-4 px-4">
-                    <span className="bg-white/10 backdrop-blur-lg rounded-2xl px-3 py-1  text-sm">
-                      {produto.categoria}
+                    <span className="bg-white/10 backdrop-blur-lg rounded-2xl px-3 py-1  text-xs font-semibold text-gray-300">
+                      {produto.categoria.toUpperCase()}
                     </span>
                   </td>
                   <td className="py-4 px-4 text-center text-gray-400">

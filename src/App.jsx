@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+// src/App.jsx
+import React, { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard";
 import ProdutosGrid from "./components/ProdutosGrid";
 import Carrinho from "./components/Carrinho";
 import ModalPagamento from "./components/ModalPagamento";
 import ModalCupomFiscal from "./components/ModalCupomFiscal";
 import GestaoEstoque from "./components/estoque/GestaoEstoque";
-import { produtos as produtosIniciais } from "./data/produtos"; // ✅ Renomear para usar estado
+import Analytics from "./components/Analytics.jsx";
+import { produtos as produtosIniciais } from "./data/produtos";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [produtos, setProdutos] = useState(produtosIniciais); // ✅ Adicionar estado
+  const [produtos, setProdutos] = useState(produtosIniciais);
   const [carrinho, setCarrinho] = useState([]);
   const [mostrarPagamento, setMostrarPagamento] = useState(false);
   const [mostrarCupom, setMostrarCupom] = useState(false);
   const [desconto, setDesconto] = useState(0);
   const [cpf, setCpf] = useState("");
 
+  // view controla: 'vendas' (página principal), 'analytics' (nova aba), 'estoque'
   const [view, setView] = useState("vendas");
 
   const [formaPagamento, setFormaPagamento] = useState("dinheiro");
@@ -25,6 +28,24 @@ function App() {
   const [animacaoAdd, setAnimacaoAdd] = useState("");
 
   const [totalVendas, setTotalVendas] = useState(0);
+
+  // Histórico de vendas (persistido em localStorage)
+  const [vendasHistorico, setVendasHistorico] = useState(() => {
+    try {
+      const raw = localStorage.getItem("vendasHistorico");
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("vendasHistorico", JSON.stringify(vendasHistorico));
+    } catch {
+      // Silently ignore localStorage errors
+    }
+  }, [vendasHistorico]);
 
   const [tipoCartao, setTipoCartao] = useState("debito");
   const [numeroCartao, setNumeroCartao] = useState("");
@@ -38,11 +59,10 @@ function App() {
 
   const [validarCamposCartao, setValidarCamposCartao] = useState(false);
 
-  // ✅ Função para atualizar produtos (necessária para o estoque)
   const handleAtualizarProdutos = (dadosProduto) => {
-    setProdutos(prev => ({
+    setProdutos((prev) => ({
       ...prev,
-      [dadosProduto.codigo]: dadosProduto
+      [dadosProduto.codigo]: dadosProduto,
     }));
   };
 
@@ -156,7 +176,9 @@ function App() {
       dadosPagamento = { tipo: "pix", chavePix, tipoChavePix };
     }
 
+    const now = new Date();
     const cupom = {
+      id: now.getTime(),
       itens: [...carrinho],
       subtotal: total,
       desconto: valorDesconto,
@@ -165,23 +187,30 @@ function App() {
       dadosPagamento,
       troco,
       cpf,
-      data: new Date().toLocaleString("pt-BR"),
+      data: now.toLocaleString("pt-BR"),
+      dataISO: now.toISOString(),
     };
 
-    setTotalVendas(totalVendas + totalFinal);
+    // atualiza total e guarda no histórico (persistido)
+    setTotalVendas((prev) => prev + totalFinal);
+    setVendasHistorico((prev) => [cupom, ...prev]);
+
     setCupomData(cupom);
     setMostrarPagamento(false);
     setMostrarCupom(true);
-    setValidarCamposCartao(false); // ✅ Adicionar reset
+    setValidarCamposCartao(false);
   };
 
   const novaVenda = () => {
-    if (cupomData) { // ✅ Adicionar notificação
-      toast.success(`Venda faturada no valor de R$ ${cupomData.total.toFixed(2)}`, {
-        position: "top-center",
-        autoClose: 2500,
-        theme: "colored"
-      });
+    if (cupomData) {
+      toast.success(
+        `Venda faturada no valor de R$ ${cupomData.total.toFixed(2)}`,
+        {
+          position: "top-center",
+          autoClose: 2500,
+          theme: "colored",
+        }
+      );
     }
 
     setCarrinho([]);
@@ -195,45 +224,112 @@ function App() {
     setCvvCartao("");
     setNomeCartao("");
     setChavePix("");
-    setTipoChavePix("celular"); // ✅ Corrigir
+    setTipoChavePix("celular");
     setParcelas(1);
     setValidarCamposCartao(false);
     setMostrarCupom(false);
   };
 
-  // ✅ Renderizar tela de estoque
+  // Renderizar Gestão de Estoque
   if (view === "estoque") {
     return (
       <>
         <GestaoEstoque
           produtos={produtos}
           onVoltar={() => setView("vendas")}
-          onAtualizarProdutos={handleAtualizarProdutos} // ✅ Passar função
+          onAtualizarProdutos={handleAtualizarProdutos}
         />
-        <ToastContainer position="top-center" autoClose={2500} theme="colored" />
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          theme="colored"
+        />
       </>
     );
   }
 
-  // Tela de vendas
+  // Página Analytics
+  if (view === "analytics") {
+    return (
+      <div className="min-h-screen p-4 md:p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Top nav simples */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setView("vendas")}
+                className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
+              >
+                Dashboard
+              </button>
+              <button
+                className="px-4 py-2 rounded-xl bg-[var(--cor-fundo)] border border-white/20 text-white shadow-lg cursor-pointer"
+                // estamos na aba Analytics
+              >
+                Analytics
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => setView("estoque")}
+                className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
+              >
+                Gestão de Estoque
+              </button>
+            </div>
+          </div>
+
+          <Analytics vendasHistorico={vendasHistorico} produtos={produtos} />
+        </div>
+
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          theme="colored"
+        />
+      </div>
+    );
+  }
+
+  // Tela de vendas (padrão)
   return (
+     
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
             Villa Itália
           </h1>
-          <p>
-            Villa Itália Supermercado
-          </p>
+          <p>Villa Itália Supermercado</p>
         </div>
 
         <Dashboard
           totalVendas={totalVendas}
           itensCarrinho={carrinho.length}
           totalProdutos={Object.keys(produtos).length}
-          onAbrirEstoque={() => setView("estoque")} // ✅ Passar função
+          onAbrirEstoque={() => setView("estoque")}
         />
+        {/* Top nav: Dashboard / Analytics */}
+        <div className="flex items-center  gap-4 mb-6">
+          <button
+            onClick={() => setView("vendas")}
+            className="px-4 py-2 rounded-xl bg-[var(--cor-fundo)] text-white shadow-lg border border-white/20 cursor-pointer"
+          >
+            Dashboard
+          </button>
+          <button
+            onClick={() => setView("analytics")}
+            className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
+          >
+            Analytics
+          </button>
+          <button
+            onClick={() => setView("estoque")}
+            className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
+          >
+            Estoque
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ProdutosGrid

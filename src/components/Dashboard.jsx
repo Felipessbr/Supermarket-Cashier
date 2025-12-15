@@ -1,9 +1,9 @@
 import React from 'react';
 import { TrendingUp, ShoppingCart, Package, Boxes } from 'lucide-react';
 
-export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos, onAbrirEstoque }) {
+export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
       {/* Card - Vendas Hoje */}
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
@@ -47,15 +47,7 @@ export default function Dashboard({ totalVendas, itensCarrinho, totalProdutos, o
       </div>
 
       {/* Card - Botão Estoque */}
-      <button
-        onClick={onAbrirEstoque}
-        className="bg-[var(--cor-fundo)] backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-[var(--cor-fundo-hover)] transition-all duration-300 flex items-center justify-center gap-4 cursor-pointer  hover:bg-white/15 transition-all duration-300"
-      >
-        <Boxes className="w-8 h-8 text-white" />
-        <p className="text-xl font-bold text-[var(--cor-texto)]">
-          Gestão de Estoque
-        </p>
-      </button>
+     
 
     </div>
   );
