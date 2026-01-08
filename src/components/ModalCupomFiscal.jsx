@@ -91,16 +91,16 @@ export default function ModalCupomFiscal({ mostrar, cupomData, onNovaVenda }) {
           <button
             onClick={onNovaVenda}
             className="flex-1 
-    bg-[var(--cor-fundo)] 
-    text-white 
-    py-3 
-    rounded-xl 
-    font-bold 
-    transition-all 
-    duration-300 
-    cursor-pointer
-    hover:bg-[#1a0e22]"
-          >
+            bg-[var(--cor-fundo)] 
+            text-white 
+            py-3 
+            rounded-xl 
+            font-bold 
+            transition-all 
+            duration-300 
+            cursor-pointer
+            hover:bg-[#1a0e22]"
+                  >
             Nova Venda
           </button>
         </div>

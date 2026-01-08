@@ -63,27 +63,27 @@ export default function Carrinho({
             <button
               onClick={onFinalizar}
               className="
-    w-full 
-    text-white 
-    py-4 
-    rounded-xl 
-    font-bold 
-    text-lg 
-    flex 
-    items-center 
-    justify-center 
-    gap-3 
-    cursor-pointer
-    transition-all 
-    duration-300 
-    bg-[#4f3e50]
-    shadow-[0_4px_15px_rgba(0,0,0,0.4)]
-    hover:shadow-[0_6px_25px_rgba(0,0,0,0.6)]
-    hover:scale-[1.03]
-    active:scale-[0.97]
-    active:shadow-[0_3px_10px_rgba(0,0,0,0.4)]
-    animate-[fadeIn_0.6s_ease-out]
-  "
+              w-full 
+              text-white 
+              py-4 
+              rounded-xl 
+              font-bold 
+              text-lg 
+              flex 
+              items-center 
+              justify-center 
+              gap-3 
+              cursor-pointer
+              transition-all 
+              duration-300 
+              bg-[#4f3e50]
+              shadow-[0_4px_15px_rgba(0,0,0,0.4)]
+              hover:shadow-[0_6px_25px_rgba(0,0,0,0.6)]
+              hover:scale-[1.03]
+              active:scale-[0.97]
+              active:shadow-[0_3px_10px_rgba(0,0,0,0.4)]
+              animate-[fadeIn_0.6s_ease-out]
+            "
             >
               <DollarSign className="w-6 h-6" />
               Finalizar Compra

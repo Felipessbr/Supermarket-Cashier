@@ -5,7 +5,8 @@ import VendasPorPeriodo from "./graficos/VendasPorPeriodo.jsx";
 import ProdutosVendidos from "./graficos/ProdutosVendidos.jsx";
 import MetodoPagamento from "./graficos/MetodoPagamento.jsx";
 
-export default function Analytics({ vendasHistorico = [], produtos = {} }) {
+export default function Analytics({ vendasHistorico = [], produtos = [] }) {
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-white mb-4">Analytics</h1>
