@@ -14,7 +14,7 @@ export default function FormCartao({
   setTipoCartao,
   parcelas,
   setParcelas,
-  totalFinal,
+  totalFinal, 
 
   validarCampos,
 }) {

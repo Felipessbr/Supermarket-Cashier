@@ -1,4 +1,3 @@
-// src/pages/DashboardVendas.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Dashboard from "../components/Dashboard";

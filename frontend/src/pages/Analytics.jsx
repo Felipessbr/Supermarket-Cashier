@@ -1,4 +1,3 @@
-// src/pages/Analytics.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnalyticsComponent from "../components/Analytics";
@@ -24,7 +23,7 @@ export default function AnalyticsPage() {
               Dashboard
             </button>
             <button
-              className="px-4 py-2 rounded-xl bg-[var(--cor-fundo)] border border-white/20 text-white shadow-lg cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[var(--cor-fundo)] border border-white/30 text-white shadow-lg cursor-pointer"
             >
               Analytics
             </button>

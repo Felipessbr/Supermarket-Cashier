@@ -4,6 +4,7 @@ import DashboardVendas from '../pages/DashboardVendas';
 import Analytics from '../pages/Analytics';
 import GestaoEstoque from '../pages/GestaoEstoque';
 import NotFound from '../pages/NotFound';
+import Login from '../pages/Login'
 
 export default function AppRoutes() {
   return (
@@ -11,6 +12,7 @@ export default function AppRoutes() {
       {/* Rota Principal - Dashboard de Vendas */}
       <Route path="/" element={<DashboardVendas />} />
       
+      <Route path='/login' element={<Login/>}/>
       {/* Rota de Analytics */}
       <Route path="/analytics" element={<Analytics />} />
       

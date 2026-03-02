@@ -1,7 +1,7 @@
-// src/pages/NotFound.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Home, AlertCircle } from "lucide-react";
+import imagemNot from "../img/carrinho-e-cesta-de-compras-e-icones-financas.png"
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -9,11 +9,9 @@ export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="text-center">
-        <div className="inline-block bg-white/10 backdrop-blur-lg rounded-full p-6 mb-6">
-          <AlertCircle className="w-24 h-24 text-[var(--cor-texto)]" />
-        </div>
-        
-        <h1 className="text-6xl font-bold text-white mb-4">404</h1>
+        <img src={imagemNot} alt="Página não encontrada" className="mx-auto w-[45%] mb-6" />
+       
+        <h1 className="text-8xl font-bold text-white mb-4">404</h1>
         <h2 className="text-2xl font-semibold text-[var(--cor-texto)] mb-6">
           Página não encontrada
         </h2>
