@@ -30,10 +30,11 @@ app.post("/api/login", (req, res) => {
   const { email, senha, tipo } = req.body;
 
   const usuario = usuarios.find(
-    (u) => u.email === email && u.senha === senha && u.tipo === tipo,
+    (u) => u.email === email && u.senha === senha && u.tipo === tipo
   );
+
   if (!usuario) {
-    return res.status(200).json({
+    return res.status(401).json({
       mensagem: "Email, senha ou tipo inválido",
     });
   }

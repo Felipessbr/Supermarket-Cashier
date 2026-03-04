@@ -3,18 +3,23 @@ import { motion } from "framer-motion";
 
 import img from "../img/8101846.jpg";
 import imglogo from "../img/Lage (2).svg";
+import Dashboard from "@/components/Dashboard";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
   const [tipo, setTipo] = useState("funcionario");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const navigate = useNavigate()
+
 
 async function handleLogin() {
   try {
@@ -36,6 +41,9 @@ async function handleLogin() {
       alert(data.mensagem);
       return;
     }
+
+    localStorage.setItem("usuario", JSON.stringify(data.usuario))
+   navigate("/dashboard")
 
     alert(data.mensagem);
     console.log(data);
