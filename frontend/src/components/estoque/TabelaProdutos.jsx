@@ -38,7 +38,7 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
       </div>
 
       {/* TABELA */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto "> 
         <table className="w-full">
           <thead>
             <tr className="border-2 border-white/20">
@@ -54,11 +54,11 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
               <th className="text-left py-3 px-4 text-white font-bold">
                 Estoque
               </th>
-              <th className="text-left py-3 px-4 text-white font-bold">Min.</th>
+              <th className="text-left py-3 px-4 text-white font-bold hidden md:table-cell">Min.</th>
               <th className="text-left py-3 px-4 text-white font-bold">
                 Preço
               </th>
-              <th className="text-left py-3 px-4 text-white font-bold">
+              <th className="text-left py-3 px-4 text-white font-bold hidden md:table-cell">
                 Custo
               </th>
               <th className="text-left py-3 px-4 text-white font-bold">
@@ -110,13 +110,13 @@ export default function TabelaProdutos({ produtos, onEditar, onMovimentar }) {
                       {produto.estoque}
                     </span>
                   </td>
-                  <td className="py-4 px-4 text-center text-gray-400">
+                  <td className="py-4 px-4 text-center text-gray-400 hidden md:table-cell">
                     {produto.estoqueMinimo}
                   </td>
                   <td className="py-4 px-4 text-right text-white font-semibold">
                     {produto.preco.toFixed(2)}
                   </td>
-                  <td className="py-4 px-4 text-right text-gray-400">
+                  <td className="py-4 px-4 text-right text-gray-400 hidden md:table-cell">
                     {produto.custoUnitario.toFixed(2)}
                   </td>
 

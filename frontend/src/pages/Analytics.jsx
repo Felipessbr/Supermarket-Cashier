@@ -17,7 +17,7 @@ export default function AnalyticsPage() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/dashboard")}
               className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
             >
               Dashboard

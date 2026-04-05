@@ -13,11 +13,18 @@ import ModalAdicionarProduto from "./ModalAdicionarProduto";
 import ModalMovimentacao from "./ModalMovimentacao";
 import HistoricoMovimentacoes from "./HistoricoMovimentacoes";
 import AlertasEstoque from "./AlertasEstoque";
+import { useNavigate } from "react-router-dom";
+import PrivateRoute from "../PrivateRoute";
+
+
 export default function GestaoEstoque({
   produtos,
-  onVoltar,
   onAtualizarProdutos,
 }) {
+  const navigate = useNavigate();
+
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
   const [view, setView] = useState("produtos"); // produtos, historico, alertas
   const [mostrarModalProduto, setMostrarModalProduto] = useState(false);
   const [mostrarModalMovimentacao, setMostrarModalMovimentacao] =
@@ -100,12 +107,16 @@ export default function GestaoEstoque({
         {/* header */}
         <div className="fex items-center justify-content-between mb-8">
           <div className="flex items-center gap-4">
-            <button
-              onClick={onVoltar}
-              className="bg-white/10 backdrop-blur-lg p-3 rounded-xl hover:bg-white/20 transition-all cursor-pointer"
-            >
-              <ArrowLeft className="w-6 h-6 text-[var(--cor-texto)]" />
-            </button>
+            {/* Se o usuário NÃO for funcionário, mostra o botão de voltar */}
+            {usuario?.tipo !== "funcionario" && (
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="bg-white/10 backdrop-blur-lg p-3 rounded-xl hover:bg-white/20 transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-6 h-6 text-[var(--cor-texto)]" />
+              </button>
+            )}
+
             <div>
               <h1 className="text-4xl font-bold text-white">
                 Gestão de Estoque
@@ -118,14 +129,14 @@ export default function GestaoEstoque({
             setProdutoEdit(null)
             setMostrarModalProduto(true)
           }}
-          className=" border border-white/20 hover:border-white/50 rounded-2xl  text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+            className=" border border-white/20 hover:border-white/50 rounded-2xl  text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
           >
-            <Plus className="w-5 h-5"/>
+            <Plus className="w-5 h-5" />
             Novo Produto
           </button>
         </div>
 
-              {/* Cards de Estatísticas */}
+        {/* Cards de Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
             <div className="flex items-center gap-4">
@@ -165,36 +176,33 @@ export default function GestaoEstoque({
         </div>
 
         {/* Navegação */}
-        <div className="flex gap-3 mb-6">
+        <div className="flex gap-3 mb-6 flex-wrap md "> 
           <button
             onClick={() => setView('produtos')}
-            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              view === 'produtos'
+            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${view === 'produtos'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'bg-white/10 text-whitehover:bg-white/20'
-            }`}
+              }`}
           >
             <Package className="w-5 h-5" />
             Produtos
           </button>
           <button
             onClick={() => setView('historico')}
-            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              view === 'historico'
+            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${view === 'historico'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'bg-white/10 text-whitehover:bg-white/20'
-            }`}
+              }`}
           >
             <History className="w-5 h-5" />
             Histórico
           </button>
           <button
             onClick={() => setView('alertas')}
-            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${
-              view === 'alertas'
+            className={`px-6 py-3 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${view === 'alertas'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'bg-white/10 text-whitehover:bg-white/20'
-            }`}
+              }`}
           >
             <AlertTriangle className="w-5 h-5" />
             Alertas

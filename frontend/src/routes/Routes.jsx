@@ -20,7 +20,7 @@ export default function AppRoutes() {
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute>
+          <PrivateRoute tipoPermitido="gerente">
             <DashboardVendas />
           </PrivateRoute>
         }
@@ -29,7 +29,7 @@ export default function AppRoutes() {
       <Route
         path="/analytics"
         element={
-          <PrivateRoute>
+          <PrivateRoute tipoPermitido="gerente">
             <Analytics />
           </PrivateRoute>
         }
@@ -38,7 +38,7 @@ export default function AppRoutes() {
       <Route
         path="/estoque"
         element={
-          <PrivateRoute>
+          <PrivateRoute tipoPermitido={["gerente","funcionario"]}>
             <GestaoEstoque />
           </PrivateRoute>
         }

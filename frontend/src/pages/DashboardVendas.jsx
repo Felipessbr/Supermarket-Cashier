@@ -11,7 +11,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function DashboardVendas() {
-  const navigate = useNavigate();
+   const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const navigate = useNavigate();2
   const [produtos] = useState(produtosIniciais);
   const [carrinho, setCarrinho] = useState([]);
   const [mostrarPagamento, setMostrarPagamento] = useState(false);
@@ -220,11 +222,14 @@ const novaVenda = () => {
         />
 
         {/* Navegação */}
+          {usuario.tipo !== "cliente" && (
         <div className="flex items-center gap-4 mb-6">
+            
+
           <button
-            onClick={() => navigate("/")}
+            
             className="px-4 py-2 rounded-xl bg-[var(--cor-fundo)] text-white shadow-lg border border-white/20 cursor-pointer"
-          >
+            >
             Dashboard
           </button>
           <button
@@ -236,10 +241,11 @@ const novaVenda = () => {
           <button
             onClick={() => navigate("/estoque")}
             className="px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/15 transition cursor-pointer"
-          >
+            >
             Estoque
           </button>
         </div>
+          )}
 
         {/* Grid Principal */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
